@@ -39,14 +39,14 @@ end
 
 
   def list_songs
-    Song.all.sort{ |a,b| a.name <=> b.name }.each.with_index(1) do |g, i|
-      puts "#{i}. #{g.name}"
+    Song.all.sort{ |a,b| a.name <=> b.name }.each.with_index(1) do |s, i|
+      puts "#{i}. #{s.artist.name} - {s.name} -{s.genre.name}"
   end
 
 
   def list_artists
-    Artist.all.sort{ |a,b| a.name <=> b.name }.each.with_index(1) do |g, i|
-      puts "#{i}. #{g.name}"
+    Artist.all.sort{ |a,b| a.name <=> b.name }.each.with_index(1) do |a, i|
+      puts "#{i}. #{a.name}"
   end
 
   def list_genre
@@ -54,7 +54,39 @@ end
       puts "#{i}. #{g.name}"
   end
 end
-  def list_songs_by_artist
-    puts "Please enter name of artist:"
-    input = gets.strip
+    def list_songs_by_artist
+      puts "Please enter name of artist:"
+      input = gets.strip
+
+      if artist = Artist.find_by_name(input)
+        artist.song.sort{ |a, b| a.name <=> b.name }.each.with_index(1) do |s, i|
+          puts "#{i}. #{s.artist.name} - #{s.name}"
+    end
   end
+end
+
+    def list_songs_by_genre
+      puts "Please enter name of a genre:"
+      input = gets.strip
+      genre = Genre.all
+      
+      if genre.select { |genre| genre.name == input }.epmty?
+        return
+      else 
+        selected = genres.select { |genre| genre.name == input }
+        selected.each_with_index do |genre|
+          sorted_songs = genre.songs.sort_by { |song| song.name }
+          sorted_songs.each_with_index do |song, index|
+            puts "#{index + 1}, #{song.artist.name} - #{song.name}"
+          end
+        end
+      end
+    end
+
+    def play_song
+      puts "Which song number would you like to play?"
+      input = gets.strip.to_i
+      song = Song.all.sort_by!{ |song| song.name }[input - 1] if input > 0 && input < Song.all.length
+      puts "Playing #{song.name} by #{song.artist.name}" if song
+    end
+    end
