@@ -69,10 +69,10 @@ end
       puts "Please enter name of a genre:"
       input = gets.strip
       genre = Genre.all
-      
+
       if genre.select { |genre| genre.name == input }.epmty?
         return
-      else 
+      else
         selected = genres.select { |genre| genre.name == input }
         selected.each_with_index do |genre|
           sorted_songs = genre.songs.sort_by { |song| song.name }
