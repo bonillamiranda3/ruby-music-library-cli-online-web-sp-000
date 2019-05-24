@@ -65,4 +65,3 @@ class Song
       new_from_filename(filename).tap{ |s| s.save}
     end
   end
-  
